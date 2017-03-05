@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="PHPStan Doctrine extensions" default="check">
+<project name="PHPStan Guzzle extensions" default="check">
 
     <target name="check" depends="
 		composer,
@@ -27,8 +27,6 @@
                 passthru="true"
                 checkreturn="true"
         >
-            <arg value="--exclude"/>
-            <arg path="tests/PHPStan/Analyser/data"/>
             <arg path="src" />
             <arg path="tests" />
         </exec>
