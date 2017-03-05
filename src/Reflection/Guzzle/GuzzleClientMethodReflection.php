@@ -18,7 +18,7 @@ use PHPStan\Type\Type;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
-class GuzzleMethodReflection implements MethodReflection
+class GuzzleClientMethodReflection implements MethodReflection
 {
     private $broker;
     private $name;

@@ -7,8 +7,8 @@ namespace Tests\PHPStan\Reflection\Guzzle;
 use GuzzleHttp\Client;
 use PHPStan\Broker\Broker;
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\Guzzle\GuzzleMethodReflection;
-use PHPStan\Reflection\Guzzle\GuzzleMethodsClassReflectionExtension;
+use PHPStan\Reflection\Guzzle\GuzzleClientMethodReflection;
+use PHPStan\Reflection\Guzzle\GuzzleClientMethodsClassReflectionExtension;
 
 class GuzzleMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestCase
 {

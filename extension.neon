@@ -1,5 +1,5 @@
 services:
     -
-        class: PHPStan\Reflection\Guzzle\GuzzleMethodsClassReflectionExtension
+        class: PHPStan\Reflection\Guzzle\GuzzleClientMethodsClassReflectionExtension
         tags:
             - phpstan.broker.methodsClassReflectionExtension
