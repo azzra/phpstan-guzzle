@@ -13,13 +13,13 @@ use PHPStan\Reflection\Guzzle\GuzzleClientMethodsClassReflectionExtension;
 class GuzzleMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var GuzzleMethodsClassReflectionExtension
+     * @var GuzzleClientMethodsClassReflectionExtension
      */
     private $extension;
 
     public function setUp()
     {
-        $this->extension = new GuzzleMethodsClassReflectionExtension();
+        $this->extension = new GuzzleClientMethodsClassReflectionExtension();
     }
 
     /**
@@ -56,7 +56,7 @@ class GuzzleMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestC
         $this->extension->setBroker($broker);
         $classReflection = $this->createMock(ClassReflection::class);
         $methodReflection = $this->extension->getMethod($classReflection, $methodName);
-        $this->assertInstanceOf(GuzzleMethodReflection::class, $methodReflection);
+        $this->assertInstanceOf(GuzzleClientMethodReflection::class, $methodReflection);
     }
 
     public function getMethodProvider(): array

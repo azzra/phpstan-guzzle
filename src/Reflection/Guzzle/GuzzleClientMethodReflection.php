@@ -77,7 +77,6 @@ class GuzzleClientMethodReflection implements MethodReflection
 
     public function getReturnType(): Type
     {
-        return 'Async' !== substr($this->name, -5) ?
-            new ObjectType(ResponseInterface::class, false) : new ObjectType(PromiseInterface::class, false);
+        return new ObjectType('Async' !== substr($this->name, -5) ? ResponseInterface::class : PromiseInterface::class, false);
     }
 }
