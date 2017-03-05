@@ -23,12 +23,13 @@ class GuzzleMethodExtensionTest extends \PHPUnit_Framework_TestCase
         $classReflection = $this->createMock(ClassReflection::class);
         $methodReflection = new ClientMethodReflection($classReflection, 'foo');
 
+        $this->assertSame($classReflection, $methodReflection->getDeclaringClass());
         $this->assertFalse($methodReflection->isStatic());
         $this->assertFalse($methodReflection->isPrivate());
         $this->assertTrue($methodReflection->isPublic());
+        $this->assertSame($methodReflection, $methodReflection->getPrototype());
         $this->assertSame('foo', $methodReflection->getName());
         $this->assertFalse($methodReflection->isVariadic());
-        $this->assertSame($classReflection, $methodReflection->getDeclaringClass());
     }
 
     /**

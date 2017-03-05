@@ -7,9 +7,9 @@
 * [PHPStan](https://github.com/phpstan/phpstan)
 * [Guzzle](https://github.com/guzzle/guzzle)
 
-This extension provides following features:
+This extension provides following feature:
 
-* Adds missing magics method on `GuzzleHttp\Client` with correct return types
+* Adds missing magics method (`get`, `post`, ... and the asynchronous ones) on `GuzzleHttp\Client` with correct return types
 
 ## Usage
 
