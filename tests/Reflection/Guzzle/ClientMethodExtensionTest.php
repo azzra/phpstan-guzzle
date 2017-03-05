@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
 use PHPStan\Broker\Broker;
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\Guzzle\GuzzleClientMethodReflection;
+use PHPStan\Reflection\Guzzle\ClientMethodReflection;
 use PHPStan\Type\ObjectType;
 use Psr\Http\Message\ResponseInterface;
 
@@ -22,7 +22,7 @@ class GuzzleMethodExtensionTest extends \PHPUnit_Framework_TestCase
     public function testMethodExtension(string $methodName)
     {
         $broker = $this->createMock(Broker::class);
-        $methodReflection = new GuzzleClientMethodReflection($broker, $methodName);
+        $methodReflection = new ClientMethodReflection($broker, $methodName);
 
         $this->assertFalse($methodReflection->isStatic());
         $this->assertFalse($methodReflection->isPrivate());
@@ -53,7 +53,7 @@ class GuzzleMethodExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetReturnType(string $className, string $methodName)
     {
         $broker = $this->createMock(Broker::class);
-        $methodReflection = new GuzzleClientMethodReflection($broker, $methodName);
+        $methodReflection = new ClientMethodReflection($broker, $methodName);
         $type = $methodReflection->getReturnType();
 
         $this->assertInstanceOf(ObjectType::class, $type);

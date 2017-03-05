@@ -11,7 +11,7 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 
-class GuzzleClientMethodsClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareClassReflectionExtension
+class ClientMethodsClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareClassReflectionExtension
 {
     const METHODS_SYNC = ['get', 'head', 'put', 'post', 'patch', 'delete'];
     const METHODS_ASYNC = ['getAsync', 'headAsync', 'putAsync', 'postAsync', 'patchAsync', 'deleteAsync'];
@@ -33,6 +33,6 @@ class GuzzleClientMethodsClassReflectionExtension implements MethodsClassReflect
 
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
-        return new GuzzleClientMethodReflection($this->broker, $methodName);
+        return new ClientMethodReflection($this->broker, $methodName);
     }
 }

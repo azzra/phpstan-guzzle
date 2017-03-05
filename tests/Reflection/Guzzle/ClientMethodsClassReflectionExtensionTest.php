@@ -7,19 +7,19 @@ namespace Tests\PHPStan\Reflection\Guzzle;
 use GuzzleHttp\Client;
 use PHPStan\Broker\Broker;
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\Guzzle\GuzzleClientMethodReflection;
-use PHPStan\Reflection\Guzzle\GuzzleClientMethodsClassReflectionExtension;
+use PHPStan\Reflection\Guzzle\ClientMethodReflection;
+use PHPStan\Reflection\Guzzle\ClientMethodsClassReflectionExtension;
 
 class GuzzleMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var GuzzleClientMethodsClassReflectionExtension
+     * @var ClientMethodsClassReflectionExtension
      */
     private $extension;
 
     public function setUp()
     {
-        $this->extension = new GuzzleClientMethodsClassReflectionExtension();
+        $this->extension = new ClientMethodsClassReflectionExtension();
     }
 
     /**
@@ -56,7 +56,7 @@ class GuzzleMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestC
         $this->extension->setBroker($broker);
         $classReflection = $this->createMock(ClassReflection::class);
         $methodReflection = $this->extension->getMethod($classReflection, $methodName);
-        $this->assertInstanceOf(GuzzleClientMethodReflection::class, $methodReflection);
+        $this->assertInstanceOf(ClientMethodReflection::class, $methodReflection);
     }
 
     public function getMethodProvider(): array
