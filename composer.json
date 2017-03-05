@@ -10,8 +10,11 @@
 		"guzzlehttp/guzzle": "~6.0"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^5.7",
-		"satooshi/php-coveralls": "dev-master"
+		"consistence/coding-standard": "~0.12.0",
+		"phing/phing": "^2.13.0",
+		"phpunit/phpunit": "^5.3",
+		"satooshi/php-coveralls": "^1.0",
+		"slevomat/coding-standard": "^1.1.1"
 	},
 	"autoload": {
 		"psr-4": {

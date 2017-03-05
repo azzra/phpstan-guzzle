@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Tests\PHPStan\Reflection\Guzzle;
 
@@ -18,77 +18,78 @@ use Psr\Http\Message\UriInterface;
 
 class GuzzleMethodExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testMethodExtension()
-    {
-        $classReflection = $this->createMock(ClassReflection::class);
-        $methodReflection = new ClientMethodReflection($classReflection, 'foo');
 
-        $this->assertSame($classReflection, $methodReflection->getDeclaringClass());
-        $this->assertFalse($methodReflection->isStatic());
-        $this->assertFalse($methodReflection->isPrivate());
-        $this->assertTrue($methodReflection->isPublic());
-        $this->assertSame($methodReflection, $methodReflection->getPrototype());
-        $this->assertSame('foo', $methodReflection->getName());
-        $this->assertFalse($methodReflection->isVariadic());
-    }
+	public function testMethodExtension()
+	{
+		$classReflection = $this->createMock(ClassReflection::class);
+		$methodReflection = new ClientMethodReflection($classReflection, 'foo');
 
-    /**
-     * @dataProvider getReturnTypeProvider
-     *
-     * @param string $className
-     * @param string $methodName
-     */
-    public function testGetReturnType(string $className, string $methodName)
-    {
-        $classReflection = $this->createMock(ClassReflection::class);
-        $methodReflection = new ClientMethodReflection($classReflection, $methodName);
-        $type = $methodReflection->getReturnType();
+		$this->assertSame($classReflection, $methodReflection->getDeclaringClass());
+		$this->assertFalse($methodReflection->isStatic());
+		$this->assertFalse($methodReflection->isPrivate());
+		$this->assertTrue($methodReflection->isPublic());
+		$this->assertSame($methodReflection, $methodReflection->getPrototype());
+		$this->assertSame('foo', $methodReflection->getName());
+		$this->assertFalse($methodReflection->isVariadic());
+	}
 
-        $this->assertInstanceOf(ObjectType::class, $type);
-        $this->assertSame($className, $type->getClass());
-        $this->assertFalse($type->isNullable());
-    }
+	/**
+	 * @dataProvider getReturnTypeProvider
+	 *
+	 * @param string $className
+	 * @param string $methodName
+	 */
+	public function testGetReturnType(string $className, string $methodName)
+	{
+		$classReflection = $this->createMock(ClassReflection::class);
+		$methodReflection = new ClientMethodReflection($classReflection, $methodName);
+		$type = $methodReflection->getReturnType();
 
-    public function getReturnTypeProvider(): array
-    {
-        $values = [];
-        foreach (ClientMethodsClassReflectionExtension::METHODS_SYNC as $method) {
-            $values[] = [ResponseInterface::class, $method];
-        }
-        foreach (ClientMethodsClassReflectionExtension::METHODS_ASYNC as $method) {
-            $values[] = [PromiseInterface::class, $method];
-        }
+		$this->assertInstanceOf(ObjectType::class, $type);
+		$this->assertSame($className, $type->getClass());
+		$this->assertFalse($type->isNullable());
+	}
 
-        return $values;
-    }
+	public function getReturnTypeProvider(): array
+	{
+		$values = [];
+		foreach (ClientMethodsClassReflectionExtension::METHODS_SYNC as $method) {
+			$values[] = [ResponseInterface::class, $method];
+		}
+		foreach (ClientMethodsClassReflectionExtension::METHODS_ASYNC as $method) {
+			$values[] = [PromiseInterface::class, $method];
+		}
 
-    public function testGetParameters()
-    {
-        $classReflection = $this->createMock(ClassReflection::class);
-        $methodReflection = new ClientMethodReflection($classReflection, 'foo');
-        $parameters = $methodReflection->getParameters();
+		return $values;
+	}
 
-        $this->assertSame(2, count($parameters));
+	public function testGetParameters()
+	{
+		$classReflection = $this->createMock(ClassReflection::class);
+		$methodReflection = new ClientMethodReflection($classReflection, 'foo');
+		$parameters = $methodReflection->getParameters();
 
-        /** @var DummyParameter $parameter */
-        $parameter = $parameters[0];
-        $this->assertInstanceOf(DummyParameter::class, $parameter);
-        $this->assertFalse($parameter->isOptional());
-        $this->assertInstanceOf(CommonUnionType::class, $parameter->getType());
+		$this->assertSame(2, count($parameters));
 
-        /** @var CommonUnionType $unionType */
-        $unionType = $parameter->getType();
-        $types = $unionType->getTypes();
-        $this->assertSame(2, count($types));
-        $this->assertInstanceOf(StringType::class, $types[0]);
-        $this->assertFalse($types[0]->isNullable());
-        $this->assertInstanceOf(ObjectType::class, $types[1]);
-        $this->assertFalse($types[1]->isNullable());
-        $this->assertSame(UriInterface::class, $types[1]->getClass());
+		/** @var DummyParameter $parameter */
+		$parameter = $parameters[0];
+		$this->assertInstanceOf(DummyParameter::class, $parameter);
+		$this->assertFalse($parameter->isOptional());
+		$this->assertInstanceOf(CommonUnionType::class, $parameter->getType());
 
-        $parameter = $parameters[1];
-        $this->assertInstanceOf(DummyParameter::class, $parameter);
-        $this->assertTrue($parameter->isOptional());
-        $this->assertInstanceOf(MixedType::class, $parameter->getType());
-    }
+		/** @var CommonUnionType $unionType */
+		$unionType = $parameter->getType();
+		$types = $unionType->getTypes();
+		$this->assertSame(2, count($types));
+		$this->assertInstanceOf(StringType::class, $types[0]);
+		$this->assertFalse($types[0]->isNullable());
+		$this->assertInstanceOf(ObjectType::class, $types[1]);
+		$this->assertFalse($types[1]->isNullable());
+		$this->assertSame(UriInterface::class, $types[1]->getClass());
+
+		$parameter = $parameters[1];
+		$this->assertInstanceOf(DummyParameter::class, $parameter);
+		$this->assertTrue($parameter->isOptional());
+		$this->assertInstanceOf(MixedType::class, $parameter->getType());
+	}
 }
