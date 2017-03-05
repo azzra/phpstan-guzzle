@@ -7,11 +7,4 @@
         <exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces"/>
         <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
     </rule>
-    <rule ref="SlevomatCodingStandard.Typehints.TypeHintDeclaration">
-        <properties>
-            <property name="usefulAnnotations" type="array" value="
-				@dataProvider
-			"/>
-        </properties>
-    </rule>
 </ruleset>
