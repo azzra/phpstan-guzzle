@@ -4,44 +4,31 @@ declare(strict_types=1);
 
 namespace Tests\PHPStan\Reflection\Guzzle;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
-use PHPStan\Broker\Broker;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\Guzzle\ClientMethodReflection;
+use PHPStan\Reflection\Guzzle\ClientMethodsClassReflectionExtension;
+use PHPStan\Reflection\Php\DummyParameter;
+use PHPStan\Type\CommonUnionType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\StringType;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
 
 class GuzzleMethodExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @dataProvider methodExtensionProvider
-     *
-     * @param string $methodName
-     */
-    public function testMethodExtension(string $methodName)
+    public function testMethodExtension()
     {
-        $broker = $this->createMock(Broker::class);
-        $methodReflection = new ClientMethodReflection($broker, $methodName);
+        $classReflection = $this->createMock(ClassReflection::class);
+        $methodReflection = new ClientMethodReflection($classReflection, 'foo');
 
         $this->assertFalse($methodReflection->isStatic());
         $this->assertFalse($methodReflection->isPrivate());
         $this->assertTrue($methodReflection->isPublic());
-        $this->assertSame($methodName, $methodReflection->getName());
+        $this->assertSame('foo', $methodReflection->getName());
         $this->assertFalse($methodReflection->isVariadic());
-
-        $classReflection = $this->createMock(ClassReflection::class);
-        $broker->expects($this->once())->method('getClass')->with(Client::class)
-            ->willReturn($classReflection);
         $this->assertSame($classReflection, $methodReflection->getDeclaringClass());
-    }
-
-    public function methodExtensionProvider()
-    {
-        return [
-            ['get'],
-            ['getAsync'],
-        ];
     }
 
     /**
@@ -52,8 +39,8 @@ class GuzzleMethodExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetReturnType(string $className, string $methodName)
     {
-        $broker = $this->createMock(Broker::class);
-        $methodReflection = new ClientMethodReflection($broker, $methodName);
+        $classReflection = $this->createMock(ClassReflection::class);
+        $methodReflection = new ClientMethodReflection($classReflection, $methodName);
         $type = $methodReflection->getReturnType();
 
         $this->assertInstanceOf(ObjectType::class, $type);
@@ -63,9 +50,44 @@ class GuzzleMethodExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function getReturnTypeProvider(): array
     {
-        return [
-            [ResponseInterface::class, 'get'],
-            [PromiseInterface::class, 'getAsync'],
-        ];
+        $values = [];
+        foreach (ClientMethodsClassReflectionExtension::METHODS_SYNC as $method) {
+            $values[] = [ResponseInterface::class, $method];
+        }
+        foreach (ClientMethodsClassReflectionExtension::METHODS_ASYNC as $method) {
+            $values[] = [PromiseInterface::class, $method];
+        }
+
+        return $values;
+    }
+
+    public function testGetParameters()
+    {
+        $classReflection = $this->createMock(ClassReflection::class);
+        $methodReflection = new ClientMethodReflection($classReflection, 'foo');
+        $parameters = $methodReflection->getParameters();
+
+        $this->assertSame(2, count($parameters));
+
+        /** @var DummyParameter $parameter */
+        $parameter = $parameters[0];
+        $this->assertInstanceOf(DummyParameter::class, $parameter);
+        $this->assertFalse($parameter->isOptional());
+        $this->assertInstanceOf(CommonUnionType::class, $parameter->getType());
+
+        /** @var CommonUnionType $unionType */
+        $unionType = $parameter->getType();
+        $types = $unionType->getTypes();
+        $this->assertSame(2, count($types));
+        $this->assertInstanceOf(StringType::class, $types[0]);
+        $this->assertFalse($types[0]->isNullable());
+        $this->assertInstanceOf(ObjectType::class, $types[1]);
+        $this->assertFalse($types[1]->isNullable());
+        $this->assertSame(UriInterface::class, $types[1]->getClass());
+
+        $parameter = $parameters[1];
+        $this->assertInstanceOf(DummyParameter::class, $parameter);
+        $this->assertTrue($parameter->isOptional());
+        $this->assertInstanceOf(MixedType::class, $parameter->getType());
     }
 }

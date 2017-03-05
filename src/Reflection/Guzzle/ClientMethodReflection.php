@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace PHPStan\Reflection\Guzzle;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
-use PHPStan\Broker\Broker;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\Php\DummyParameter;
@@ -20,18 +18,18 @@ use Psr\Http\Message\UriInterface;
 
 class ClientMethodReflection implements MethodReflection
 {
-    private $broker;
+    private $classReflection;
     private $name;
 
-    public function __construct(Broker $broker, string $name)
+    public function __construct(ClassReflection $classReflection, string $name)
     {
-        $this->broker = $broker;
+        $this->classReflection = $classReflection;
         $this->name = $name;
     }
 
     public function getDeclaringClass(): ClassReflection
     {
-        return $this->broker->getClass(Client::class);
+        return $this->classReflection;
     }
 
     public function isStatic(): bool
