@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace PHPStan\Reflection\Guzzle;
 
@@ -26,12 +28,11 @@ class GuzzleMethodsClassReflectionExtension implements MethodsClassReflectionExt
 
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
-        return Client::class === $classReflection->getName() && in_array($methodName, self::METHODS_SYNC + self::METHODS_ASYNC, true);
+        return Client::class === $classReflection->getName() && in_array($methodName, array_merge(self::METHODS_SYNC, self::METHODS_ASYNC), true);
     }
 
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
         return new GuzzleMethodReflection($this->broker, $methodName);
     }
-
 }
