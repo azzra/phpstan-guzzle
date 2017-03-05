@@ -9,7 +9,7 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\Guzzle\ClientMethodReflection;
 use PHPStan\Reflection\Guzzle\ClientMethodsClassReflectionExtension;
 
-class GuzzleMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestCase
+class ClientMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestCase
 {
 
 	/**
@@ -25,12 +25,13 @@ class GuzzleMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestC
 	/**
 	 * @dataProvider hasMethodProvider
 	 *
-	 * @param boolean   $expected
+	 * @param boolean $expected
 	 * @param string $className
 	 * @param string $methodName
 	 */
 	public function testHasMethod(bool $expected, string $className, string $methodName)
 	{
+		/** @var \PHPUnit_Framework_MockObject_Builder_MethodNameMatch $classReflection */
 		$classReflection = $this->createMock(ClassReflection::class);
 		$classReflection->method('getName')->will($this->returnValue($className));
 		$this->assertSame($expected, $this->extension->hasMethod($classReflection, $methodName));
@@ -64,4 +65,5 @@ class GuzzleMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestC
 			['getAsync'],
 		];
 	}
+
 }

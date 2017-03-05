@@ -79,4 +79,5 @@ class ClientMethodReflection implements MethodReflection
 	{
 		return new ObjectType(substr($this->name, -5) !== 'Async' ? ResponseInterface::class : PromiseInterface::class, false);
 	}
+
 }

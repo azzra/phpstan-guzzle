@@ -11,6 +11,7 @@ use PHPStan\Reflection\MethodsClassReflectionExtension;
 
 class ClientMethodsClassReflectionExtension implements MethodsClassReflectionExtension
 {
+
 	const METHODS_SYNC = ['get', 'head', 'put', 'post', 'patch', 'delete'];
 	const METHODS_ASYNC = ['getAsync', 'headAsync', 'putAsync', 'postAsync', 'patchAsync', 'deleteAsync'];
 
@@ -23,4 +24,5 @@ class ClientMethodsClassReflectionExtension implements MethodsClassReflectionExt
 	{
 		return new ClientMethodReflection($classReflection, $methodName);
 	}
+
 }

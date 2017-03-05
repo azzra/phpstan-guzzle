@@ -16,7 +16,7 @@ use PHPStan\Type\StringType;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
-class GuzzleMethodExtensionTest extends \PHPUnit_Framework_TestCase
+class ClientMethodExtensionTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function testMethodExtension()
@@ -92,4 +92,5 @@ class GuzzleMethodExtensionTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($parameter->isOptional());
 		$this->assertInstanceOf(MixedType::class, $parameter->getType());
 	}
+
 }
