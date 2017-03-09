@@ -8,8 +8,9 @@ use GuzzleHttp\Client;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\Guzzle\ClientMethodReflection;
 use PHPStan\Reflection\Guzzle\ClientMethodsClassReflectionExtension;
+use PHPUnit\Framework\TestCase;
 
-class ClientMethodsClassReflectionExtensionTest extends \PHPUnit_Framework_TestCase
+class ClientMethodsClassReflectionExtensionTest extends TestCase
 {
 
 	/**

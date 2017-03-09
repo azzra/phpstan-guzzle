@@ -1,9 +1,13 @@
 language: php
+env:
+  - PHPUNIT_VERSION=5.7
+  - PHPUNIT_VERSION=6.0
 php:
   - 7.0
   - 7.1
 before_script:
   - composer self-update
+  - composer require --dev --no-update phpunit/phpunit=^$PHPUNIT_VERSION
   - composer install
 script:
   - vendor/bin/phing

@@ -13,10 +13,11 @@ use PHPStan\Type\CommonUnionType;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
-class ClientMethodExtensionTest extends \PHPUnit_Framework_TestCase
+class ClientMethodExtensionTest extends TestCase
 {
 
 	public function testMethodExtension()
